@@ -106,14 +106,8 @@ return [
             'driver' => 'monolog',
             'handler' => NullHandler::class,
         ],
-        //AF回调
-        'af' => [
-            //按天生成log文件
-            'driver' => 'daily',
-            //自定义日志目录
-            'path'   => storage_path('logs/af.log'),
-            'level'  => 'info',
-        ],
+
+        #####################################   自定义   ##############################
         //文件上传
         'upload' => [
             //按天生成log文件
@@ -122,24 +116,9 @@ return [
             'path'   => storage_path('logs/upload.log'),
             'level'  => 'info',
         ],
-        //订单支付时间结束系统取消
-        'box_order_cancel' => [
-            //按天生成log文件
-            'driver' => 'daily',
-            //自定义日志目录
-            'path'   => storage_path('logs/box_order_cancel.log'),
-            'level'  => 'info',
-        ],
-        //物流 -51tracking
-        '51tracking' => [
-            'driver' => 'daily',
-            'path'   => storage_path('logs/51tracking.log'),
-        ],
-        #########################    短信渠道         ##############
-        'sms_nxcloud' => [
-            'driver' => 'daily',
-            'path'   => storage_path('logs/sms/nxcloud.log'),
-        ],
+
+
+
 
     ],
 
