@@ -6,7 +6,15 @@
     "type": "project",
     "require": {
         "php": "^7.2.5",
-        "laravel/lumen-framework": "^7.0"
+        "laravel/lumen-framework": "^7.0",
+        "ext-bcmath": "*",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "illuminate/redis": "*",
+        "predis/predis": "^2.0",
+        "tymon/jwt-auth": "^1.0",
+        "hhxsv5/laravel-s": "~3.7.0",
+        "geoip2/geoip2": "^2.13"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.9.1",
@@ -14,6 +22,9 @@
         "phpunit/phpunit": "^8.5"
     },
     "autoload": {
+        "files" : [
+            "app/Helper/Functions.php"
+        ],
         "classmap": [
             "database/seeds",
             "database/factories"

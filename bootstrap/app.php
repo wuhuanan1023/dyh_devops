@@ -2,11 +2,17 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
+//引入自定义全局常量
+require_once __DIR__.'/../bootstrap/constant.php';
+
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__)
 ))->bootstrap();
 
 date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
+
+//精度计算
+bcscale(2);
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +29,9 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// $app->withFacades();
+$app->withFacades();
 
-// $app->withEloquent();
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +67,12 @@ $app->singleton(
 
 $app->configure('app');
 
+//其他配置加载引入应用程序
+$app->configure('database');
+$app->configure('jwt');//JWT
+$app->configure('logging');//日志
+
+
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -76,9 +88,12 @@ $app->configure('app');
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+ $app->routeMiddleware([
+     'auth' => App\Http\Middleware\Authenticate::class,
+
+     //管理员操作日志后置中间件
+     //'admin_log' => App\Http\Middleware\AdminActionLogMiddleware::class,
+ ]);
 
 /*
 |--------------------------------------------------------------------------
@@ -91,9 +106,11 @@ $app->configure('app');
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\Providers\EventServiceProvider::class);
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class); //JWT
+$app->register(Illuminate\Redis\RedisServiceProvider::class);//REDIS
 
 /*
 |--------------------------------------------------------------------------
@@ -109,7 +126,10 @@ $app->configure('app');
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    require __DIR__.'/../routes/web.php';
+    //管理系统
+    require __DIR__.'/../routes/admin.php';
+    //客户端
+    require __DIR__.'/../routes/app.php';
 });
 
 return $app;
