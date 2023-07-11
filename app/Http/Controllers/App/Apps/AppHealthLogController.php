@@ -26,61 +26,55 @@ class AppHealthLogController extends BaseController
         $this->validate($request, [
             'app_key'   => 'required',
             'data'      => 'required',
+            'status'    => 'required|int',
         ]);
         $app_key    = $request->post('app_key');
         $data       = $request->post('data');
+        $status     = $request->post('status'); //状态：0-未知；1-正常；2-异常；
 
         //错误App
         if (!$app = Apps::query()->where('app_key', $app_key)->first()) {
-            return $this->failed('Invalid param: app_key');
+            return $this->failed('Unknown app_key');
         }
-
-        //默认正常
-        $status = AppHealthRequest::STATUS_NORMAL;
-
-        $health_codes = [];
-        foreach ($data as $item) {
-            $code = $item['code'] ?? 0;
-            $health_codes[] = $code;
-            //错误code
-            if (!isset(AppHealthRequest::SERVER_CODE_MAP[$code])) {
-                return $this->failed('Invalid param: data');
-            }
-            if ($code != AppHealthRequest::SERVER_SUCCESS) {
-                $status = AppHealthRequest::STATUS_ERROR;
-            }
+        //错误状态值
+        if (!in_array($status, [AppHealthRequest::STATUS_NORMAL, AppHealthRequest::STATUS_ERROR])) {
+            return $this->failed('Invalid status');
         }
 
         DB::beginTransaction();
         try {
             $request = AppHealthRequest::query()->create([
                 'app_id'        => $app->id,
-                'health_codes'  => json_encode($health_codes), //健康码，[20000, 50000]
-                'data'          => json_encode($data),
+                'data'          => is_array($data) ? json_encode($data) : $data,
                 'status'        => $status, //状态：0-未知；1-正常；2-异常；
                 'created_ts'    => time(),
                 'updated_ts'    => time(),
             ]);
 
             $id = $request->id;
-            foreach ($data as $item) {
-                $code = $item['code'] ?? 0;
-                $msg = $item['msg'] ?? '';
-                AppHealthRequestDetail::query()->create([
-                    'app_id'        => $app->id,
-                    'request_id'    => $id,
-                    'health_code'   => $code,
-                    'msg'           => $msg,
-                    'created_ts'    => time(),
-                    'updated_ts'    => time(),
-                ]);
+
+            //insert data
+            $i_data = [
+                'app_id'        => $app->id,
+                'request_id'    => $id,
+                'created_ts'    => time(),
+                'updated_ts'    => time()
+            ];
+            if ($status == AppHealthRequest::STATUS_NORMAL) {
+                $i_data['msg'] = '';
+                AppHealthRequestDetail::query()->create($i_data);
+            } else {
+                foreach ($data as $msg) {
+                    $i_data['msg'] = $msg;
+                    AppHealthRequestDetail::query()->create($i_data);
+                }
             }
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
             Log::channel('app_health_check')->error(json_encode([
                 'time'      => date('Y-m-d H:i:s'),
-                'data'      => json_encode($data),
+                'data'      => is_array($data) ? json_encode($data) : $data,
                 'error'     => $e->getMessage(),
             ]));
             return $this->failed($e->getMessage());
