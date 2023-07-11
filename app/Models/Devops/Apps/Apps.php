@@ -32,7 +32,11 @@ class Apps extends BaseModel
     public static function createAppKey(): string
     {
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        return substr(str_shuffle($characters), 0, 10); // 输出8位随机字母(大小写混合)
+        $app_key = substr(str_shuffle($characters), 0, 10); // 输出10位随机字母(大小写混合)
+        if (!Apps::query()->where('app_key', $app_key)->exists()) {
+            return $app_key;
+        }
+        return self::createAppKey();
     }
 
     /**
@@ -42,8 +46,19 @@ class Apps extends BaseModel
      */
     public static function createAppSecret($is_default = false): string
     {
-        $characters = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        return $is_default ? self::DEFAULT_APP_SECRET : strtolower(substr(str_shuffle($characters), 0, 16));// 输出8位随机字母(大小写混合)
+        $characters = '123456789abcdefghijklmnopqrstuvwxyz';
+
+        if ($is_default) {
+            return self::DEFAULT_APP_SECRET;
+        }
+
+        $app_secret = substr(str_shuffle($characters), 0, 16);// 输出16位随机小写字母
+
+        //没有重复，直接返回
+        if (!Apps::query()->where('app_secret', $app_secret)->exists()) {
+            return $app_secret;
+        }
+        return self::createAppSecret($is_default);
     }
 
 
