@@ -46,6 +46,7 @@ class AppHealthLogController extends BaseController
             $request = AppHealthRequest::query()->create([
                 'app_id'        => $app->id,
                 'data'          => is_array($data) ? json_encode($data) : $data,
+                'request_ip'    => func_app_ip(),
                 'status'        => $status, //状态：0-未知；1-正常；2-异常；
                 'created_ts'    => time(),
                 'updated_ts'    => time(),
