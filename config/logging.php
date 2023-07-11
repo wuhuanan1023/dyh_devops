@@ -117,7 +117,14 @@ return [
             'level'  => 'info',
         ],
 
-
+        //应用健康度检查
+        'app_health_check' => [
+            //按天生成log文件
+            'driver' => 'daily',
+            //自定义日志目录
+            'path'   => storage_path('logs/app_health_check.log'),
+            'level'  => 'info',
+        ],
 
 
     ],

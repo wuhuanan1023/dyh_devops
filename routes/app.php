@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\App\Apps\AppHealthLogController;
 use Laravel\Lumen\Routing\Router;
 
 /** @var Router $router */
@@ -22,15 +23,12 @@ $router->group([
     'prefix' => 'api',
     'middleware' => []
 ], function () use ($router) {
+    $router->get('/',  function () use ($router) {return $router->app->version();});
+    $router->post('/', function () use ($router) {return $router->app->version();});
 
+    //健康汇报
     $router->group([], function () use ($router) {
-    });
-
-    $router->get('/', function () use ($router) {
-        return $router->app->version();
-    });
-    $router->post('/', function () use ($router) {
-        return $router->app->version();
+        $router->post('app/health/check', AppHealthLogController::class . '@healthCheck');
     });
 
 });
@@ -46,7 +44,7 @@ $router->group([
 ], function () use ($router) {
 
     $router->group(['namespace' => 'Invite'], function () use ($router) {
-        $router->get('/invite.html', "InviteController@invite");
+        $router->get('invite.html', "InviteController@invite");
     });
 });
 ################################需要用户认证################################

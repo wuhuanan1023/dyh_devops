@@ -22,11 +22,8 @@ class Apps extends BaseModel
     /**
      * 默认的 app_secret
      */
-    const DEFAULT_APP_SECRET = 'YgEQSIQAdxnAqqbB';
+    const DEFAULT_APP_SECRET = '6r2kfo4cdz1pjywe';
 
-
-    /** @var string  */
-    const CHARACTERS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     /**
      * 生成 APP_KEY
@@ -34,7 +31,8 @@ class Apps extends BaseModel
      */
     public static function createAppKey(): string
     {
-        return substr(str_shuffle(self::CHARACTERS), 0, 10); // 输出8位随机字母(大小写混合)
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        return substr(str_shuffle($characters), 0, 10); // 输出8位随机字母(大小写混合)
     }
 
     /**
@@ -44,7 +42,8 @@ class Apps extends BaseModel
      */
     public static function createAppSecret($is_default = false): string
     {
-        return $is_default ? self::DEFAULT_APP_SECRET : substr(str_shuffle(self::CHARACTERS), 0, 16);// 输出8位随机字母(大小写混合)
+        $characters = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        return $is_default ? self::DEFAULT_APP_SECRET : strtolower(substr(str_shuffle($characters), 0, 16));// 输出8位随机字母(大小写混合)
     }
 
 

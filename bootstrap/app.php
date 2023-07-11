@@ -124,7 +124,7 @@ $app->register(Illuminate\Redis\RedisServiceProvider::class);//REDIS
 */
 
 $app->router->group([
-    'namespace' => 'App\Http\Controllers',
+
 ], function ($router) {
     //管理系统
     require __DIR__.'/../routes/admin.php';
