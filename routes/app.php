@@ -12,6 +12,7 @@
 */
 
 use App\Http\Controllers\App\Apps\AppHealthLogController;
+use App\Http\Controllers\App\Apps\AppsController;
 use Laravel\Lumen\Routing\Router;
 
 /** @var Router $router */
@@ -26,8 +27,11 @@ $router->group([
     $router->get('/',  function () use ($router) {return $router->app->version();});
     $router->post('/', function () use ($router) {return $router->app->version();});
 
-    //健康汇报
+    //APP管理
     $router->group([], function () use ($router) {
+        //创建APP
+        $router->post('app/create', AppsController::class . '@create');
+        //健康上报
         $router->post('app/health/check', AppHealthLogController::class . '@healthCheck');
     });
 
