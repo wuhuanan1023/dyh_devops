@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\Admin\Apps\AppsController;
 use Laravel\Lumen\Routing\Router;
 
 /** @var Router $router */
@@ -36,6 +37,9 @@ $router->group([
     });
 
 
+
+
+
 });
 ################### 不需要用户认证 #####################
 
@@ -47,10 +51,15 @@ $router->group([
     'middleware' => [
         'auth:admin',
         //'rbac',
-        //'admin_log',
+        'admin_log',
     ]
 ], function () use ($router) {
 
+    # APP管理
+    $router->group([], function () use ($router) {
+        //创建APP
+        $router->post('app/create', AppsController::class . '@create');
+    });
 
 });
 ################### 需要用户认证 ######################

@@ -62,4 +62,34 @@ class Apps extends BaseModel
     }
 
 
+    /**
+     * 创建APP
+     * @param $name
+     * @param $app_key
+     * @param $app_secret
+     * @param string $remark
+     * @param int $status
+     * @return mixed
+     */
+    public static function createApp($name, $app_key, $app_secret, $remark = '', $status = Apps::APP_STATUS_ON)
+    {
+        //`app_name` varchar(64) NOT NULL DEFAULT '' COMMENT '应用名称',
+        //`app_key` varchar(64) DEFAULT '' COMMENT '应用标识',
+        //`app_secret` varchar(100) DEFAULT '' COMMENT '应用秘钥',
+        //`remark` varchar(255) DEFAULT '' COMMENT '备注说明',
+        //`status` tinyint(4) DEFAULT '0' COMMENT '状态：1-启用； 0-禁用',
+        //`created_ts` int(11) DEFAULT '0' COMMENT '创建时间戳',
+        //`updated_ts` int(11) DEFAULT '0' COMMENT '更新时间戳',
+        return Apps::query()->create([
+            'app_name'   => $name,
+            'app_key'    => $app_key,
+            'app_secret' => $app_secret,
+            'remark'     => $remark,
+            'status'     => $status,
+            'created_ts' => time(),
+            'updated_ts' => time(),
+        ]);
+    }
+
+
 }

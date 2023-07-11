@@ -92,7 +92,7 @@ $app->configure('logging');//日志
      'auth' => App\Http\Middleware\Authenticate::class,
 
      //管理员操作日志后置中间件
-     //'admin_log' => App\Http\Middleware\AdminActionLogMiddleware::class,
+     'admin_log' => App\Http\Middleware\AdminActionLogMiddleware::class,
  ]);
 
 /*
