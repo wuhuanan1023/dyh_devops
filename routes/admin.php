@@ -12,6 +12,7 @@
 */
 
 use App\Http\Controllers\Admin\Apps\AppsController;
+use App\Http\Controllers\Admin\Auth\AuthController;
 use Laravel\Lumen\Routing\Router;
 
 /** @var Router $router */
@@ -35,10 +36,6 @@ $router->group([
         //账户登录
         $router->post('auth/login', AuthController::class . '@login');
     });
-
-
-
-
 
 });
 ################### 不需要用户认证 #####################
