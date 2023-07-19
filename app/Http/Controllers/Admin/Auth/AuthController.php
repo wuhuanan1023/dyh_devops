@@ -8,9 +8,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
+use Laravel\Lumen\Application;
 
 class AuthController extends BaseController
 {
+
+    /**
+     * 登录页
+     * @return View|Application
+     */
+    public function loginView()
+    {
+        return view('admin.auth.login');
+    }
+
 
 
     /**

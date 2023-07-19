@@ -22,18 +22,21 @@ use Laravel\Lumen\Routing\Router;
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
-
 #账户模块
 $router->group([
-    'prefix' => 'admin',
+    'prefix' => 'a',
     'middleware' => [
         #'locale',
     ]
 ], function () use ($router) {
 
-    #登录
+    #后台页面
     $router->group([], function () use ($router) {
-        //账户登录
+        //登录页
+        $router->get('login.html', AuthController::class . '@loginView');
+    });
+    #后台接口
+    $router->group([], function () use ($router) {
         $router->post('auth/login', AuthController::class . '@login');
     });
 
@@ -44,13 +47,17 @@ $router->group([
 
 ################### 需要用户认证 ######################
 $router->group([
-    'prefix' => 'admin',
+    'prefix' => 'a',
     'middleware' => [
         'auth:admin',
         //'rbac',
         'admin_log',
     ]
 ], function () use ($router) {
+
+    $router->group([], function () use ($router) {
+        $router->post('auth/logout', AuthController::class . '@logout');
+    });
 
     # APP管理
     $router->group([], function () use ($router) {

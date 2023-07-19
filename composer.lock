@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "04a6bbaba641d6524bb797ec93530cb8",
+    "content-hash": "4755a8b80f8d4348ae47f538cdb007e9",
     "packages": [
         {
             "name": "brick/math",
@@ -3412,6 +3412,78 @@
                 }
             ],
             "time": "2021-09-25T23:10:38+00:00"
+        },
+        {
+            "name": "smallruraldog/laravel-vue-admin",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SmallRuralDog/laravel-vue-admin.git",
+                "reference": "d0c7fbf3fbfad8dffdd6a49c252fce3107dba181"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SmallRuralDog/laravel-vue-admin/zipball/d0c7fbf3fbfad8dffdd6a49c252fce3107dba181",
+                "reference": "d0c7fbf3fbfad8dffdd6a49c252fce3107dba181",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "illuminate/support": "~5|~6|~7|~8"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.1",
+                "orchestra/testbench": "~3|~4",
+                "phpunit/phpunit": "^8.0",
+                "sempro/phpunit-pretty-print": "^1.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SmallRuralDog\\Admin\\AdminServiceProvider"
+                    ],
+                    "aliases": {
+                        "Admin": "SmallRuralDog\\Admin\\Facades\\Admin"
+                    }
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "SmallRuralDog\\Admin\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "zhang wei",
+                    "email": "thinktb@qq.com"
+                }
+            ],
+            "description": "开箱即用的Laravel后台扩展",
+            "homepage": "https://github.com/smallruraldog/admin",
+            "keywords": [
+                "admin",
+                "laravel",
+                "vue"
+            ],
+            "support": {
+                "issues": "https://github.com/SmallRuralDog/laravel-vue-admin/issues",
+                "source": "https://github.com/SmallRuralDog/laravel-vue-admin/tree/master"
+            },
+            "time": "2022-06-16T02:42:19+00:00"
         },
         {
             "name": "swoole/ide-helper",
@@ -7551,7 +7623,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "smallruraldog/laravel-vue-admin": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
