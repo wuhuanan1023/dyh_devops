@@ -14,7 +14,6 @@
         "illuminate/redis": "*",
         "laravel/lumen-framework": "^7.0",
         "predis/predis": "^2.0",
-        "smallruraldog/laravel-vue-admin": "dev-master",
         "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {

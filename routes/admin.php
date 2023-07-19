@@ -31,12 +31,7 @@ $router->group([
     ]
 ], function () use ($router) {
 
-    #后台页面
-    $router->group([], function () use ($router) {
-        //登录页
-        $router->get('login.html', AuthController::class . '@loginView');
-    });
-    #后台接口
+    #账户
     $router->group([], function () use ($router) {
         $router->post('auth/login', AuthController::class . '@login');
     });
@@ -85,13 +80,30 @@ $router->group([
         //APP列表
         $router->post('apps/list', AppsController::class . '@list');
         //创建APP
-        $router->post('apps/add', AppsController::class . '@create');
+        $router->post('apps/add', AppsController::class . '@add');
         //修改APP
         $router->post('apps/edit', AppsController::class . '@edit');
         //删除APP台
         $router->post('apps/del', AppsController::class . '@del');
         //设置APP状态
         $router->post('apps/set/status', AppsController::class . '@setStatus');
+
+    });
+
+    # 系统站点管理
+    $router->group([], function () use ($router) {
+        //APP选项
+        $router->post('sys/domain/option', AppsController::class . '@option');
+        //APP列表
+        $router->post('sys/domain/list', AppsController::class . '@list');
+        //创建APP
+        $router->post('sys/domain/add', AppsController::class . '@add');
+        //修改APP
+        $router->post('sys/domain/edit', AppsController::class . '@edit');
+        //删除APP台
+        $router->post('sys/domain/del', AppsController::class . '@del');
+        //设置APP状态
+        $router->post('sys/domain/set/status', AppsController::class . '@setStatus');
 
     });
 
