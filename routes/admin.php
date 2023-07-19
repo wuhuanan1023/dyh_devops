@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\Admin\Apps\AppsController;
 use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\Platform\PlatformController;
 use Laravel\Lumen\Routing\Router;
@@ -77,12 +78,21 @@ $router->group([
         $router->post('platform/set/status', PlatformController::class . '@setStatus');
     });
 
-
-
     # APP管理
     $router->group([], function () use ($router) {
+        //APP选项
+        $router->post('apps/option', AppsController::class . '@option');
+        //APP列表
+        $router->post('apps/list', AppsController::class . '@list');
         //创建APP
-        $router->post('app/create', PlatformController::class . '@create');
+        $router->post('apps/add', AppsController::class . '@create');
+        //修改APP
+        $router->post('apps/edit', AppsController::class . '@edit');
+        //删除APP台
+        $router->post('apps/del', AppsController::class . '@del');
+        //设置APP状态
+        $router->post('apps/set/status', AppsController::class . '@setStatus');
+
     });
 
 });

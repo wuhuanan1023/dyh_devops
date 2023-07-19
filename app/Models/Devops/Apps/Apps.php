@@ -64,6 +64,7 @@ class Apps extends BaseModel
 
     /**
      * 创建APP
+     * @param $platform_id
      * @param $app_name
      * @param $app_key
      * @param $app_secret
@@ -71,8 +72,9 @@ class Apps extends BaseModel
      * @param int $status
      * @return mixed
      */
-    public static function createApp($app_name, $app_key, $app_secret, $remark = '', $status = Apps::APP_STATUS_ON)
+    public static function createApp($platform_id, $app_name, $app_key, $app_secret, $remark = '', $status = Apps::APP_STATUS_ON)
     {
+        //`platform_id` int(11) DEFAULT '0' COMMENT '所属平台ID',
         //`app_name` varchar(64) NOT NULL DEFAULT '' COMMENT '应用名称',
         //`app_key` varchar(64) DEFAULT '' COMMENT '应用标识',
         //`app_secret` varchar(100) DEFAULT '' COMMENT '应用秘钥',
@@ -81,13 +83,14 @@ class Apps extends BaseModel
         //`created_ts` int(11) DEFAULT '0' COMMENT '创建时间戳',
         //`updated_ts` int(11) DEFAULT '0' COMMENT '更新时间戳',
         return Apps::query()->create([
-            'app_name'   => $app_name,
-            'app_key'    => $app_key,
-            'app_secret' => $app_secret,
-            'remark'     => $remark ?: '',
-            'status'     => $status,
-            'created_ts' => time(),
-            'updated_ts' => time(),
+            'platform_id' => $platform_id,
+            'app_name'    => $app_name,
+            'app_key'     => $app_key,
+            'app_secret'  => $app_secret,
+            'remark'      => $remark ?: '',
+            'status'      => $status,
+            'created_ts'  => time(),
+            'updated_ts'  => time(),
         ]);
     }
 

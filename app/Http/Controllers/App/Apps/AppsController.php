@@ -30,7 +30,7 @@ class AppsController extends BaseController
             $app_key    = Apps::createAppKey();
             $app_secret = Apps::createAppSecret();
             $status     = Apps::APP_STATUS_ON;
-            Apps::createApp($app_name, $app_key, $app_secret, $remark, $status);
+            Apps::createApp(0, $app_name, $app_key, $app_secret, $remark, $status);
         } catch (\Exception $e) {
             return $this->failed($e->getMessage());
         }
