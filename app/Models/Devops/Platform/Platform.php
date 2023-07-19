@@ -16,4 +16,12 @@ class Platform extends BaseModel
     protected $table = 'platform';
     protected $guarded = [];
 
+
+    #状态：0-禁用;1-启用;
+    const STATUS_ON  = 1;
+    const STATUS_OFF = 0;
+    const STATUS_MAP = [
+        self::STATUS_ON  => '启用',
+        self::STATUS_OFF => '禁用',
+    ];
 }

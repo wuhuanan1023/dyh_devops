@@ -11,8 +11,8 @@
 |
 */
 
-use App\Http\Controllers\Admin\Apps\AppsController;
 use App\Http\Controllers\Admin\Auth\AuthController;
+use App\Http\Controllers\Admin\Platform\PlatformController;
 use Laravel\Lumen\Routing\Router;
 
 /** @var Router $router */
@@ -55,14 +55,34 @@ $router->group([
     ]
 ], function () use ($router) {
 
+    #账户管理
     $router->group([], function () use ($router) {
+        //登出
         $router->post('auth/logout', AuthController::class . '@logout');
     });
+
+    # 平台管理
+    $router->group([], function () use ($router) {
+        //平台列表
+        $router->post('platform/option', PlatformController::class . '@option');
+        //平台列表
+        $router->post('platform/list', PlatformController::class . '@list');
+        //创建平台
+        $router->post('platform/add', PlatformController::class . '@add');
+        //修改平台
+        $router->post('platform/edit', PlatformController::class . '@edit');
+        //删除平台
+        $router->post('platform/del', PlatformController::class . '@del');
+        //设置平台状态
+        $router->post('platform/set/status', PlatformController::class . '@setStatus');
+    });
+
+
 
     # APP管理
     $router->group([], function () use ($router) {
         //创建APP
-        $router->post('app/create', AppsController::class . '@create');
+        $router->post('app/create', PlatformController::class . '@create');
     });
 
 });
