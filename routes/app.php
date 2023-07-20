@@ -11,7 +11,7 @@
 |
 */
 
-use App\Http\Controllers\App\Apps\AppHealthLogController;
+use App\Http\Controllers\App\Apps\AppHealthCheckController;
 use App\Http\Controllers\App\Apps\AppsController;
 use App\Http\Controllers\App\Common\ServerSyncController;
 use Laravel\Lumen\Routing\Router;
@@ -40,7 +40,7 @@ $router->group([
         //创建APP
         $router->post('app/create', AppsController::class . '@create');
         //健康上报
-        $router->post('app/health/check', AppHealthLogController::class . '@healthCheck');
+        $router->post('app/health/check', AppHealthCheckController::class . '@healthCheck');
     });
 
 });

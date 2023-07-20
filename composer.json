@@ -19,7 +19,8 @@
     "require-dev": {
         "fzaninotto/faker": "^1.9.1",
         "mockery/mockery": "^1.3.1",
-        "phpunit/phpunit": "^8.5"
+        "phpunit/phpunit": "^8.5",
+        "swoole/ide-helper": "~4.5.3"
     },
     "autoload": {
         "files" : [

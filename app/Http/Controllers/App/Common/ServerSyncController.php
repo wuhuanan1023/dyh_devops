@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\App\Common;
 
 use App\Http\Controllers\App\BaseController;
-use App\Models\Devops\Apps\AppHealthHeck;
+use App\Models\Devops\Apps\AppHealthCheck;
 use App\Models\Devops\Apps\AppHealthCheckDetail;
 use App\Models\Devops\Apps\Apps;
 use Illuminate\Http\Request;
@@ -37,13 +37,13 @@ class ServerSyncController extends BaseController
             return $this->failed('Unknown app_key');
         }
         //错误状态值
-        if (!in_array($status, [AppHealthHeck::STATUS_NORMAL, AppHealthHeck::STATUS_ERROR])) {
+        if (!in_array($status, [AppHealthCheck::STATUS_NORMAL, AppHealthCheck::STATUS_ERROR])) {
             return $this->failed('Invalid status');
         }
 
         DB::beginTransaction();
         try {
-            $request = AppHealthHeck::query()->create([
+            $request = AppHealthCheck::query()->create([
                 'app_id'        => $app->id,
                 'data'          => is_array($data) ? json_encode($data) : $data,
                 'request_ip'    => func_app_ip(),
@@ -61,7 +61,7 @@ class ServerSyncController extends BaseController
                 'created_ts'    => time(),
                 'updated_ts'    => time()
             ];
-            if ($status == AppHealthHeck::STATUS_NORMAL) {
+            if ($status == AppHealthCheck::STATUS_NORMAL) {
                 $i_data['msg'] = '';
                 AppHealthCheckDetail::query()->create($i_data);
             } else {

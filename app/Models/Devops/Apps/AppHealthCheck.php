@@ -4,7 +4,7 @@ namespace App\Models\Devops\Apps;
 
 use App\Models\Devops\BaseModel;
 
-class AppHealthHeck extends BaseModel
+class AppHealthCheck extends BaseModel
 {
 
     protected $table = 'app_health_check';

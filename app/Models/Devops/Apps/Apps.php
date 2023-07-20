@@ -94,5 +94,24 @@ class Apps extends BaseModel
         ]);
     }
 
+    /**
+     * 检验签名
+     * @param $sign
+     * @param $app_key
+     * @param $time
+     * @return bool
+     */
+    public static function checkSign($sign, $app_key, $time)
+    {
+        if (!$sign || !$app_key || !$time) {
+            return false;
+        }
+        if (!$app = Apps::query()->where('app_key', $app_key)->first()) {
+            return false;
+        }
+        $get_sign = md5("{$app->secret}&{$time}");
+        return $sign == $get_sign;
+    }
+
 
 }

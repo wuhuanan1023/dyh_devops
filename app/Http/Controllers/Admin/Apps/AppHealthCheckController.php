@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Apps;
 
 use App\Http\Controllers\App\BaseController;
-use App\Models\Devops\Apps\AppHealthHeck;
+use App\Models\Devops\Apps\AppHealthCheck;
 use App\Models\Devops\Apps\Apps;
 use App\Models\Devops\Platform\Platform;
 use Illuminate\Http\Request;
@@ -25,7 +25,7 @@ class AppHealthCheckController extends BaseController
     public function option()
     {
         $status = [];
-        foreach (AppHealthHeck::STATUS_MAP as $key => $value) {
+        foreach (AppHealthCheck::STATUS_MAP as $key => $value) {
             $status[] = ['key'=> $key, 'value' => $value];
         }
         return $this->success([
@@ -45,11 +45,11 @@ class AppHealthCheckController extends BaseController
         $request_ip = $request->post('request_ip'); //请求IP
         $status     = $request->post('status');
 
-        $app_health_request_table   = (new AppHealthHeck())->getTable();
+        $app_health_request_table   = (new AppHealthCheck())->getTable();
         $app_table                  = (new Apps())->getTable();
         $platform_table             = (new Platform())->getTable();
 
-        $query = AppHealthHeck::query()
+        $query = AppHealthCheck::query()
             ->select([
                 'ahr.*',
                 'a.app_name',
@@ -85,7 +85,7 @@ class AppHealthCheckController extends BaseController
                     'data'          => $row['data'],
                     'request_ip'    => $row['request_ip'],
                     'status'        => $row['status'],
-                    'status_remark' => AppHealthHeck::STATUS_MAP[$row['status']] ?? '',
+                    'status_remark' => AppHealthCheck::STATUS_MAP[$row['status']] ?? '',
                     'created_time'  => $row['created_ts'] ? func_datetime_trans((int)$row['created_ts'], DEFAULT_TIMEZONE) : '-',
                     'updated_time'  => $row['updated_ts'] ? func_datetime_trans((int)$row['updated_ts'], DEFAULT_TIMEZONE) : '-',
                 ];
@@ -110,14 +110,14 @@ class AppHealthCheckController extends BaseController
         $ids    = $request->post('ids');
         $status = $request->post('status');
         $id_arr = func_get_param_ids($ids);
-        if (!isset(AppHealthHeck::STATUS_MAP[$status])) {
+        if (!isset(AppHealthCheck::STATUS_MAP[$status])) {
             return $this->failed('状态参数错误');
         }
         if (empty($id_arr)) {
             return $this->success();
         }
         try {
-            AppHealthHeck::query()
+            AppHealthCheck::query()
                 ->whereIn('id', $id_arr)
                 ->update([
                     'status'     => $status,
