@@ -170,12 +170,6 @@ class AppsController extends BaseController
      */
     public function del(Request $request)
     {
-
-
-
-
-
-        #todo
         $this->validate($request, [
             'app_ids' => 'required',
         ]);
@@ -187,25 +181,48 @@ class AppsController extends BaseController
         }
         try {
             Platform::query()->whereIn('id', $id_arr)->update([
-
+                'status'     => Apps::APP_STATUS_OFF,
+                'deleted_ts' => time(),
+                'updated_ts' => time(),
             ]);
             return $this->success();
         } catch (\Exception $e) {
             return $this->failed($e->getMessage());
         }
+    }
 
+
+    /**
+     * 修改平台状态
+     * @param Request $request
+     * @return mixed
+     * @throws ValidationException
+     */
+    public function setStatus(Request $request)
+    {
+        $this->validate($request, [
+            'app_ids'   => 'required',
+            'status'        => 'required',
+        ]);
+        $ids    = $request->post('app_ids');
+        $status = $request->post('status');
+        $id_arr = func_get_param_ids($ids);
+        if (!isset(Apps::APP_STATUS_MAP[$status])) {
+            return $this->failed('状态参数错误');
+        }
+        if (empty($id_arr)) {
+            return $this->success();
+        }
         try {
-            $app->app_name = $app_name;
-            $app->remark = $remark;
-            $app->status = $status;
-            $app->updated_ts = time();
-            $app->save();
+            Apps::query()->whereIn('id', $id_arr)->update([
+                'status'     => $status,
+                'updated_ts' => time(),
+            ]);
+            return $this->success();
         } catch (\Exception $e) {
             return $this->failed($e->getMessage());
         }
-        return $this->success();
     }
-
 
 
 }
