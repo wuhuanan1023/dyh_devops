@@ -12,6 +12,35 @@ use Illuminate\Validation\ValidationException;
 
 class PlatformController extends BaseController
 {
+
+    /**
+     * 可用平台
+     * @param Request $request
+     * @return mixed
+     */
+    public function valid(Request $request)
+    {
+        $platform_name  = $request->post('platform_name');
+        $query = Platform::query();
+        if ($platform_name) {
+            $query->where('name', 'like', "%{$platform_name}%");
+        }
+        $query->orderByDesc('id');
+        $list = $query->pluck('name', 'id')->toArray();
+//        $list = $this->getPagingRows($query, function (LengthAwarePaginator $paginator) {
+//            $paginator->getCollection()->transform(function ($row) {
+//                return [
+//                    'id'            => $row['id'],
+//                    'name'          => $row['name'],
+//                ];
+//            });
+//            return $paginator;
+//        });
+        return $this->success($list);
+    }
+
+
+
     /**
      * 平台 - option
      * @return mixed

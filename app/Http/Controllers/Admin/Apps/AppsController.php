@@ -14,6 +14,27 @@ class AppsController extends BaseController
 {
 
     /**
+     * 可用Apps
+     * @param Request $request
+     * @return mixed
+     */
+    public function valid(Request $request)
+    {
+        $platform_id  = $request->post('platform_id');
+        $app_name  = $request->post('app_name');
+        $query = Apps::query();
+        if (is_numeric($platform_id) && $platform_id) {
+            $query->where('platform_id', $platform_id);
+        }
+        if ($app_name) {
+            $query->where('app_name', 'like', "%{$app_name}%");
+        }
+        $query->orderByDesc('id');
+        $list = $query->pluck('app_name', 'id')->toArray();
+        return $this->success($list);
+    }
+
+    /**
      * APP选项
      * @return mixed
      */
@@ -51,6 +72,9 @@ class AppsController extends BaseController
             ])
             ->from("{$app_table} as a")
             ->leftJoin("{$platform_table} as p", 'p.id', '=', 'a.platform_id');
+
+        //未删除的
+        $query->where('a.deleted_ts', 0);
 
         if (is_numeric($platform_id) && $platform_id) {
             $query->where('a.platform_id', $platform_id);

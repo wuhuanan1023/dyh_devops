@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\Admin\Apps\AppContactController;
 use App\Http\Controllers\Admin\Apps\AppsController;
 use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\Platform\PlatformController;
@@ -87,7 +88,22 @@ $router->group([
         $router->post('apps/del', AppsController::class . '@del');
         //设置APP状态
         $router->post('apps/set/status', AppsController::class . '@setStatus');
+    });
 
+    # APP 联系人管理
+    $router->group([], function () use ($router) {
+        //APP联系人选项
+        $router->post('apps/contact/option', AppContactController::class . '@option');
+        //APP联系人列表
+        $router->post('apps/contact/list', AppContactController::class . '@list');
+        //创建APP联系人
+        $router->post('apps/contact/add', AppContactController::class . '@add');
+        //修改APP联系人
+        $router->post('apps/contact/edit', AppContactController::class . '@edit');
+        //删除APP联系人
+        $router->post('apps/contact/del', AppContactController::class . '@del');
+        //设置APP联系人状态
+        $router->post('apps/contact/set/status', AppContactController::class . '@setStatus');
     });
 
     # 系统站点管理
