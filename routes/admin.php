@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\Admin\Admin\AdminController;
 use App\Http\Controllers\Admin\Apps\AppContactController;
 use App\Http\Controllers\Admin\Apps\AppHealthRequestController;
 use App\Http\Controllers\Admin\Apps\AppHealthRequestDetailController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Admin\Apps\AppsController;
 use App\Http\Controllers\Admin\Apps\AppWarningController;
 use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\Platform\PlatformController;
+use App\Http\Controllers\Admin\System\SysAdminLogController;
 use Laravel\Lumen\Routing\Router;
 
 /** @var Router $router */
@@ -60,6 +62,32 @@ $router->group([
         //登出
         $router->post('auth/logout', AuthController::class . '@logout');
     });
+
+    # 管理员管理
+    $router->group([], function () use ($router) {
+        //管理员选项
+        $router->post('admin/option', AdminController::class . '@option');
+        //管理员列表
+        $router->post('admin/list', AdminController::class . '@list');
+        //创建管理员
+        $router->post('admin/add', AdminController::class . '@add');
+        //修改管理员
+        $router->post('admin/edit', AdminController::class . '@edit');
+        //删除管理员
+        $router->post('admin/del', AdminController::class . '@del');
+        //设置管理员状态
+        $router->post('admin/set/status', AdminController::class . '@setStatus');
+        //设置管理员密码
+        $router->post('admin/set/pwd', AdminController::class . '@setPassword');
+        //设置管理员密码
+        $router->post('admin/set/avatar', AdminController::class . '@setAvatar');
+
+        //管理员操作日志
+        $router->post('sys/admin/log', SysAdminLogController::class . '@list');
+    });
+
+
+
 
     # 平台管理
     $router->group([], function () use ($router) {
@@ -145,6 +173,8 @@ $router->group([
         $router->post('sys/domain/set/status', AppsController::class . '@setStatus');
 
     });
+
+
 
 });
 ################### 需要用户认证 ######################

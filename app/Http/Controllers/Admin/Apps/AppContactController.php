@@ -18,8 +18,6 @@ use Illuminate\Validation\ValidationException;
 class AppContactController extends BaseController
 {
 
-
-
     /**
      * 选项
      * @return mixed
