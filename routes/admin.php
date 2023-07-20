@@ -13,8 +13,8 @@
 
 use App\Http\Controllers\Admin\Admin\AdminController;
 use App\Http\Controllers\Admin\Apps\AppContactController;
-use App\Http\Controllers\Admin\Apps\AppHealthRequestController;
-use App\Http\Controllers\Admin\Apps\AppHealthRequestDetailController;
+use App\Http\Controllers\Admin\Apps\AppHealthCheckController;
+use App\Http\Controllers\Admin\Apps\AppHealthCheckDetailController;
 use App\Http\Controllers\Admin\Apps\AppsController;
 use App\Http\Controllers\Admin\Apps\AppWarningController;
 use App\Http\Controllers\Admin\Auth\AuthController;
@@ -138,11 +138,11 @@ $router->group([
     # APP 健康监测
     $router->group([], function () use ($router) {
         //APP健康监测 选项
-        $router->post('apps/health/request/option', AppHealthRequestController::class . '@option');
+        $router->post('apps/health/check/option', AppHealthCheckController::class . '@option');
         //APP健康监测 列表
-        $router->post('apps/health/request/list', AppHealthRequestController::class . '@list');
+        $router->post('apps/health/check/list', AppHealthCheckController::class . '@list');
         //APP健康监测 详情
-        $router->post('apps/health/request/detail', AppHealthRequestDetailController::class . '@detail');
+        $router->post('apps/health/check/detail', AppHealthCheckDetailController::class . '@detail');
     });
 
     # APP告警

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Apps;
 
 use App\Http\Controllers\App\BaseController;
-use App\Models\Devops\Apps\AppHealthRequestDetail;
+use App\Models\Devops\Apps\AppHealthCheckDetail;
 use App\Models\Devops\Apps\Apps;
 use App\Models\Devops\Platform\Platform;
 use Illuminate\Http\Request;
@@ -11,10 +11,10 @@ use Illuminate\Validation\ValidationException;
 
 /**
  * 应用健康汇报细目
- * Class AppHealthRequestDetailController
+ * Class AppHealthCheckDetailController
  * @package App\Http\Controllers\Admin\Apps
  */
-class AppHealthRequestDetailController extends BaseController
+class AppHealthCheckDetailController extends BaseController
 {
     /**
      * 列表
@@ -29,11 +29,11 @@ class AppHealthRequestDetailController extends BaseController
         ]);
         $request_id = $request->post('request_id');
 
-        $app_health_request_detail_table = (new AppHealthRequestDetail())->getTable();
+        $app_health_request_detail_table = (new AppHealthCheckDetail())->getTable();
         $app_table      = (new Apps())->getTable();
         $platform_table = (new Platform())->getTable();
 
-        $result = AppHealthRequestDetail::query()
+        $result = AppHealthCheckDetail::query()
             ->select([
                 'd.*',
                 'a.app_name',

@@ -4,10 +4,10 @@ namespace App\Models\Devops\Apps;
 
 use App\Models\Devops\BaseModel;
 
-class AppHealthRequest extends BaseModel
+class AppHealthHeck extends BaseModel
 {
 
-    protected $table = 'app_health_request';
+    protected $table = 'app_health_check';
     protected $guarded = [];
 
     # 状态

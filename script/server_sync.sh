@@ -5,25 +5,26 @@ API_URL="http://devops.dyhculture.com/api/server-sync"
 #POST_DATA='{"key1":"value1", "key2":"value2"}'
 declare -A POST_DATA
 
+
+#####################   函数区   ##################
+
+
 # 构建数据
-format_data() {
+function format_data() {
     key=$1
     value=$2
     POST_DATA[${key}]=${value}
 }
 
 # 发送请求
-http_post() {
+function http_post() {
     POST_DATA=$1
-
-
-
 
     curl -X POST -H "Content-Type: application/json" -d "${POST_DATA}" ${API_URL}
 }
 
 #获取硬盘信息
-get_hard_disk() {
+function get_hard_disk() {
     log_file=/tmp/hard_disk.tmp
     df / |tail -n +2 > ${log_file}
     disk_total=$( cat ${log_file} |tail -n +1 |tr -s " " "%"|cut -d% -f2 )

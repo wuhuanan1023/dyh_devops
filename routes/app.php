@@ -13,6 +13,7 @@
 
 use App\Http\Controllers\App\Apps\AppHealthLogController;
 use App\Http\Controllers\App\Apps\AppsController;
+use App\Http\Controllers\App\Common\ServerSyncController;
 use Laravel\Lumen\Routing\Router;
 
 /** @var Router $router */
@@ -26,6 +27,13 @@ $router->group([
 ], function () use ($router) {
     $router->get('/',  function () use ($router) {return $router->app->version();});
     $router->post('/', function () use ($router) {return $router->app->version();});
+
+
+    $router->group([], function () use ($router) {
+        //服务器同步
+        $router->post('/server-sync', ServerSyncController::class . '@serverSync');
+
+    });
 
     //APP管理
     $router->group([], function () use ($router) {

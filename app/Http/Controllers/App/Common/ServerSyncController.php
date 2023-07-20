@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\App\Apps;
+namespace App\Http\Controllers\App\Common;
 
 use App\Http\Controllers\App\BaseController;
 use App\Models\Devops\Apps\AppHealthHeck;
@@ -12,16 +12,16 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 
-class AppHealthLogController extends BaseController
+class ServerSyncController extends BaseController
 {
 
     /**
-     * 健康检查
+     * 服务器同步
      * @param Request $request
      * @return mixed
      * @throws ValidationException
      */
-    public function healthCheck(Request $request)
+    public function serverSync(Request $request)
     {
         $this->validate($request, [
             'app_key'   => 'required',

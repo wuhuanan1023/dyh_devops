@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\Apps;
 
 use App\Http\Controllers\App\BaseController;
 use App\Models\Devops\Apps\AppContact;
-use App\Models\Devops\Apps\AppHealthRequestDetail;
+use App\Models\Devops\Apps\AppHealthCheckDetail;
 use App\Models\Devops\Apps\Apps;
 use App\Models\Devops\Apps\AppWarning;
 use App\Models\Devops\Platform\Platform;
