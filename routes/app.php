@@ -31,16 +31,16 @@ $router->group([
 
     $router->group([], function () use ($router) {
         //服务器同步
-        $router->post('/server-sync', ServerSyncController::class . '@serverSync');
+        $router->post('servers/server-sync', ServerSyncController::class . '@serverSync');
 
     });
 
     //APP管理
     $router->group([], function () use ($router) {
         //创建APP
-        $router->post('app/create', AppsController::class . '@create');
+        $router->post('apps/create', AppsController::class . '@create');
         //健康上报
-        $router->post('app/health/check', AppHealthCheckController::class . '@healthCheck');
+        $router->post('apps/health/check', AppHealthCheckController::class . '@healthCheck');
     });
 
 });
