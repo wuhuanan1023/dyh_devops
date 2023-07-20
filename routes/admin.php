@@ -12,6 +12,8 @@
 */
 
 use App\Http\Controllers\Admin\Apps\AppContactController;
+use App\Http\Controllers\Admin\Apps\AppHealthRequestController;
+use App\Http\Controllers\Admin\Apps\AppHealthRequestDetailController;
 use App\Http\Controllers\Admin\Apps\AppsController;
 use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\Platform\PlatformController;
@@ -104,6 +106,16 @@ $router->group([
         $router->post('apps/contact/del', AppContactController::class . '@del');
         //设置APP联系人状态
         $router->post('apps/contact/set/status', AppContactController::class . '@setStatus');
+    });
+
+    # APP 健康监测
+    $router->group([], function () use ($router) {
+        //APP健康监测 选项
+        $router->post('apps/health/request/option', AppHealthRequestController::class . '@option');
+        //APP健康监测 列表
+        $router->post('apps/health/request/list', AppHealthRequestController::class . '@list');
+        //APP健康监测 详情
+        $router->post('apps/health/request/detail', AppHealthRequestDetailController::class . '@detail');
     });
 
     # 系统站点管理
