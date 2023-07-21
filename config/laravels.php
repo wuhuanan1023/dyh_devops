@@ -191,14 +191,15 @@ return [
     */
 
     'timer' => [
-        'enable'          => true,
+        'enable'          => env('LARAVELS_TIMER', false),
 
         // The list of cron job
-        // Enable LaravelScheduleJob to run `php artisan schedule:run` every 1 minute, replace Linux Crontab
         'jobs'            => [
-            // 启用LaravelScheduleJob来执行`php artisan schedule:run`，每分钟一次，替代Linux Crontab
-            // \Hhxsv5\LaravelS\Illuminate\LaravelScheduleJob::class,
-            //[\App\Jobs\SwooleTimer\WebSocketApproveTimeOutJob::class, [5000, true]],//审批人员长连接响应超时处理
+            // Enable LaravelScheduleJob to run `php artisan schedule:run` every 1 minute, replace Linux Crontab
+            // 启用 LaravelScheduleJob 来执行 `php artisan schedule:run`，每分钟一次，来替代Linux Crontab
+            // Hhxsv5\LaravelS\Illuminate\LaravelScheduleJob::class,
+            //[\App\Jobs\SwooleTimer\WebSocketApproveTimeOutJob::class, [5000, true]],
+
         ],
 
         // Max waiting time of reloading
@@ -290,6 +291,7 @@ return [
 
     'swoole' => [
         'daemonize'          => env('LARAVELS_DAEMONIZE', false),
+        // dispatch_mode只能设置为2、4、5，https://wiki.swoole.com/#/server/setting?id=dispatch_mode
         'dispatch_mode'      => env('LARAVELS_DISPATCH_MODE', 2),
         'worker_num'         => env('LARAVELS_WORKER_NUM', 30),
         //'task_worker_num'    => env('LARAVELS_TASK_WORKER_NUM', 10),

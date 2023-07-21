@@ -111,6 +111,7 @@ $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class); //JWT
 $app->register(Illuminate\Redis\RedisServiceProvider::class);//REDIS
+$app->register(Hhxsv5\LaravelS\Illuminate\LaravelSServiceProvider::class);//Laravel-S
 
 /*
 |--------------------------------------------------------------------------
