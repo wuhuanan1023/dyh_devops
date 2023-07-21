@@ -21,7 +21,7 @@ return [
     |
     */
 
-    'listen_ip' => env('LARAVELS_LISTEN_IP', '127.0.0.1'),
+    'listen_ip' => env('LARAVELS_LISTEN_IP', '0.0.0.0'),
 
     /*
     |--------------------------------------------------------------------------
@@ -149,7 +149,7 @@ return [
     'websocket' => [
         'enable' => true,
         // 'handler' => XxxWebSocketHandler::class,
-        'handler' => \App\Services\WebSocket\ConsoleWebSocketService::class,
+        'handler' => \App\Services\WebSocket\WebSocketService::class,
     ],
 
     /*

@@ -126,6 +126,15 @@ return [
             'level'  => 'info',
         ],
 
+        //websocket
+        'websocket' => [
+            //按天生成log文件
+            'driver' => 'daily',
+            //自定义日志目录
+            'path'   => storage_path('logs/websocket.log'),
+            'level'  => 'info',
+        ],
+
 
     ],
 
