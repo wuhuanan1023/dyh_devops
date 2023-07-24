@@ -15,6 +15,26 @@ class RedisCode
         return "demo:{$str}";
     }
 
+    /**
+     * USER-SERV
+     * @param int $user_id
+     * @return string
+     */
+    public static function wsImUserServ($user_id)
+    {
+        return "swoole:im:user-serv:{$user_id}";
+    }
+
+    /**
+     * SERV-USER
+     * @param string $server_id
+     * @return string
+     */
+    public static function wsImServUser($server_id)
+    {
+        return "swoole:im:serv-user:{$server_id}";
+    }
+
 
 
 }

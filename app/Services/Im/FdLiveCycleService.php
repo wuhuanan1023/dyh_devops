@@ -29,19 +29,19 @@ class FdLiveCycleService
      */
     public function setFd($user_id,$fd)
     {
-//        app('swoole')->wsTable->set('uid:' . $user_id, ['value' => $fd]);// 绑定uid到fd的映射
-//        app('swoole')->wsTable->set('fd:' . $fd, ['value' => $user_id]);// 绑定fd到uid的映射
-//
-//        //redis中心注册
-//        try {
-//            $this->redis->set( RedisCode::wsImUserServ($user_id), $this->serv_id );
-//            $this->redis->sAdd( RedisCode::wsImServUser($this->serv_id), $user_id );
-//        } catch(\Exception $e) {
-//            echo $e->getMessage();
-//        }
+        // 绑定uid到fd的映射
+        app('swoole')->wsTable->set('uid:' . $user_id, ['value' => $fd]);
+        // 绑定fd到uid的映射
+        app('swoole')->wsTable->set('fd:' . $fd, ['value' => $user_id]);
+
+        //redis中心注册
+        try {
+            $this->redis->set( RedisCode::wsImUserServ($user_id), $this->serv_id );
+            $this->redis->sAdd( RedisCode::wsImServUser($this->serv_id), $user_id );
+        } catch(\Exception $e) {
+            echo $e->getMessage();
+        }
     }
-
-
 
     /**
      * 关闭绑定
@@ -69,46 +69,50 @@ class FdLiveCycleService
 
             }
 
-            if ( !empty($curr_fd) ) {
-                if ( $curr_fd == $fd ) {
-                    if ( !empty( $user_serv_id ) ) {
-                        if ( $user_serv_id == $this->serv_id ) {//同机同连，完全释放
-                            app('swoole')->wsTable->del('uid:' . $user_id);//解绑uid映射
-
-                            try {
-                                $this->redis->set( RedisCode::wsImUserServ( $user_id ), '' );
-                                $this->redis->srem( RedisCode::wsImServUser($this->serv_id), $user_id );
-                            } catch(\Exception $e) {
-
-                            }
-                        } else {//跨机重连，部分释放
-                            app('swoole')->wsTable->del('uid:' . $user_id);//解绑uid映射
-
-                            try {
-                                $this->redis->srem( RedisCode::wsImServUser($this->serv_id), $user_id );
-                            } catch(\Exception $e) {
-
-                            }
-                        }
-                    } else {//【一般不会走这里，非正常逻辑，异常处理】
-                        app('swoole')->wsTable->del('uid:' . $user_id);//解绑uid映射
-
-                        try {
-                            $this->redis->srem( RedisCode::wsImServUser($this->serv_id), $user_id );
-                        } catch(\Exception $e) {
-
-                        }
-                    }
-                } else {//同机重连
-                    //什么都不用做...
-                }
-            } else {//【一般不会走这里，非正常逻辑，异常处理】
+            //【一般不会走这里，非正常逻辑，异常处理】
+            if (empty($curr_fd)) {
                 try {
                     $this->redis->srem( RedisCode::wsImServUser($this->serv_id), $user_id );
                 } catch(\Exception $e) {
 
                 }
             }
+
+            if ( $curr_fd == $fd ) {
+
+                //【一般不会走这里，非正常逻辑，异常处理】
+                if (empty($user_serv_id)) {
+                    app('swoole')->wsTable->del('uid:' . $user_id);//解绑uid映射
+                    try {
+                        $this->redis->srem( RedisCode::wsImServUser($this->serv_id), $user_id );
+                    } catch(\Exception $e) {
+
+                    }
+                }
+
+                if ( $user_serv_id == $this->serv_id ) {//同机同连，完全释放
+                    app('swoole')->wsTable->del('uid:' . $user_id);//解绑uid映射
+
+                    try {
+                        $this->redis->set( RedisCode::wsImUserServ( $user_id ), '' );
+                        $this->redis->srem( RedisCode::wsImServUser($this->serv_id), $user_id );
+                    } catch(\Exception $e) {
+
+                    }
+                } else {//跨机重连，部分释放
+                    app('swoole')->wsTable->del('uid:' . $user_id);//解绑uid映射
+
+                    try {
+                        $this->redis->srem( RedisCode::wsImServUser($this->serv_id), $user_id );
+                    } catch(\Exception $e) {
+
+                    }
+                }
+
+            }
+//            else {//同机重连
+//                //什么都不用做...
+//            }
         }
 
         app('swoole')->wsTable->del('fd:' . $fd);//解绑fd映射
@@ -122,13 +126,13 @@ class FdLiveCycleService
     public static function getFdToUid($uid)
     {
         $uid = app('swoole')->wsTable->get('uid:' . $uid);
-        if ($uid !== false) {
-            $fd = $uid['value'];
-            // 连接是否为有效的WebSocket客户端连接
-            if (app('swoole')->isEstablished($fd)) {
-                return $fd;
-            }
+        if ($uid === false) {
             return '';
+        }
+        // 连接是否为有效的WebSocket客户端连接
+        $fd = $uid['value'];
+        if (app('swoole')->isEstablished($fd)) {
+            return $fd;
         }
         return '';
     }

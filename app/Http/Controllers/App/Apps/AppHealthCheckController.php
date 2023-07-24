@@ -34,7 +34,7 @@ class AppHealthCheckController extends BaseController
         $data       = $request->post('data');
         $status     = $request->post('status'); //状态：0-未知；1-正常；2-异常；
         $time       = $request->post('time');
-        $sign       = $request->post('sign');
+        $sign       = $request->post('sign'); //签名
 
         //错误App
         if (!$app = Apps::query()->where('app_key', $app_key)->first()) {
@@ -51,7 +51,7 @@ class AppHealthCheckController extends BaseController
 
         DB::beginTransaction();
         try {
-            $request = AppHealthCheck::query()->create([
+            $check = AppHealthCheck::query()->create([
                 'app_id'        => $app->id,
                 'data'          => is_array($data) ? json_encode($data) : $data,
                 'request_ip'    => func_app_ip(),
@@ -60,7 +60,7 @@ class AppHealthCheckController extends BaseController
                 'updated_ts'    => time(),
             ]);
 
-            $id = $request->id;
+            $id = $check->id;
 
             //insert data
             $i_data = [
