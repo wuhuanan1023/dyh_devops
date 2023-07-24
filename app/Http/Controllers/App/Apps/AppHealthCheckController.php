@@ -33,15 +33,12 @@ class AppHealthCheckController extends BaseController
         $app_key    = $request->post('app_key');
         $data       = $request->post('data');
         $status     = $request->post('status'); //状态：0-未知；1-正常；2-异常；
-        $time       = $request->post('time');
-        $sign       = $request->post('sign'); //签名
+//        $time       = $request->post('time');
+//        $sign       = $request->post('sign'); //签名
 
         //错误App
         if (!$app = Apps::query()->where('app_key', $app_key)->first()) {
             return $this->failed('Unknown app_key');
-        }
-        if (!Apps::checkSign($sign, $app_key, $time)) {
-            return $this->failed('签名错误');
         }
 
         //错误状态值

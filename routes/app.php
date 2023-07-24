@@ -20,28 +20,34 @@ use Laravel\Lumen\Routing\Router;
 
 
 ################### 不需要用户认证 #####################
-#对外接口
 $router->group([
     'prefix' => 'api',
     'middleware' => []
 ], function () use ($router) {
+
+    //根目录
     $router->get('/',  function () use ($router) {return $router->app->version();});
     $router->post('/', function () use ($router) {return $router->app->version();});
-
 
     $router->group([], function () use ($router) {
         //服务器同步
         $router->post('servers/server-sync', ServerSyncController::class . '@serverSync');
-
     });
 
-    //APP管理
-    $router->group([], function () use ($router) {
-        //创建APP
-        $router->post('apps/create', AppsController::class . '@create');
-        //健康上报
-        $router->post('apps/health/check', AppHealthCheckController::class . '@healthCheck');
+    ################### 需要APP验签 #####################
+    $router->group([
+        'middleware' => [
+            'app_check_sign' //APP验签
+        ]
+    ], function () use ($router) {
+        //APP管理
+        $router->group([], function () use ($router) {
+            //健康上报
+            $router->post('apps/health/check', AppHealthCheckController::class . '@healthCheck');
+        });
     });
+
+
 
 });
 ################### 不需要用户认证 #####################
@@ -55,9 +61,6 @@ $router->group([
     ]
 ], function () use ($router) {
 
-    $router->group(['namespace' => 'Invite'], function () use ($router) {
-        $router->get('invite.html', "InviteController@invite");
-    });
 });
 ################################需要用户认证################################
 

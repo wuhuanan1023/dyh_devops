@@ -11,4 +11,6 @@ class ResponseCode
 
     const TOKEN_ERROR = 40001;//token错误
 
+    const SIGN_ERROR  = 40002;//签名错误
+
 }

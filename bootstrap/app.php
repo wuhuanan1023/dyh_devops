@@ -93,6 +93,10 @@ $app->configure('logging');//日志
 
      //管理员操作日志后置中间件
      'admin_log' => App\Http\Middleware\AdminActionLogMiddleware::class,
+
+     //APP接口验签
+     'app_check_sign' => App\Http\Middleware\AppCheckSignMiddleware::class,
+
  ]);
 
 /*
