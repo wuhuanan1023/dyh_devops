@@ -175,7 +175,7 @@ class AdminController extends BaseController
             'status'   => 'required',
             'is_super' => 'required',
         ]);
-        $id             = $request->post('contact_id');
+        $id         = $request->post('id');
         $status     = $request->post('status');
         $is_super   = $request->post('is_super');
         $nickname   = $request->post('nickname', '');
@@ -228,6 +228,7 @@ class AdminController extends BaseController
         try {
             // 删除员工
             Admin::query()->where('id', $id)->delete();
+
             DB::commit();
             return $this->success();
         } catch (\Exception $e) {
